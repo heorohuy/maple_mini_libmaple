@@ -1,6 +1,5 @@
 
 #include "board.h"
-#include "USBSerial.h"
 #include <libmaple/libmaple_types.h>
 #include <libmaple/gpio.h>
 #include <libmaple/timer.h>
@@ -8,12 +7,19 @@
 #include <libmaple/nvic.h>
 #include <libmaple/systick.h>
 #include <libmaple/rcc.h>
+#include <libmaple/usb_cdcacm.h>
+#include <libmaple/usb.h>
+
 
 //TODO: Add remaining functions
 static void setup_flash(void);
 static void setup_clocks(void);
 static void setup_nvic(void);
 static void setup_timers(void);
+static void board_setup_usb(void);
+static void series_init(void);
+static void disableDebugPorts(void);
+
 
 
 //***************************
@@ -166,9 +172,8 @@ static void setup_timers(void) {
 }
 
 static void board_setup_usb(void) {
-#if BOARD_HAVE_SERIALUSB
-    USBSerialBegin();
-#endif
+    usb_cdcacm_enable(GPIOB, 9);
+
 }
 
 static void series_init(void) {
@@ -181,13 +186,7 @@ static void disableDebugPorts(void) {
     afio_cfg_debug_ports(AFIO_DEBUG_NONE);
 }
 
-/* Since we want the Serial Wire/JTAG pins as GPIOs, disable both SW
- * and JTAG debug support, unless configured otherwise. */
-static void boardInit(void) {
-#ifndef CONFIG_MAPLE_MINI_NO_DISABLE_DEBUG
-    disableDebugPorts();
-#endif
-}
+
 
 //Initialize functions for the board
 //Starts up 
@@ -200,7 +199,8 @@ void init(void) {
     setup_timers();
     board_setup_usb();
     series_init();
-    boardInit();
+    disableDebugPorts();
+
 }
 
 

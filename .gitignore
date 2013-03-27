@@ -31,3 +31,4 @@
 *.a
 
 /build
+real-main.cpp

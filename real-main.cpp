@@ -1,14 +1,11 @@
 // Here's a wirish include:
 
+#include "SerialUSB.h"
 #include <libmaple/libmaple.h>
+#include <libmaple/gpio.h>
+#include <libmaple/timer.h>
 #include <libmaple/usart.h>
-#include <libmaple/systick.h>
-#include <libmaple/nvic.h>
-#include <libmaple/delay.h>
-#include <libmaple/usb_cdcacm.h>
-#include <libmaple/usb.h>
 #include "board.h"
-#include "USBSerial.h"
 
 
 
@@ -25,14 +22,14 @@ void setup(void) {
 
     //SerialUSB works, but we can also just call the usb_cdcacm function directly
     //SerialUSB.begin();
-    USBSerialBegin();
+    //USBSerialBegin();
     //GPIO magic
     //gpio_set_mode(GPIOB, 12, GPIO_OUTPUT_PP);
     //gpio_write_bit(GPIOB, 12, 1);
-
     //Magic number
     //delay(255);
 
+    usbSerial.start();
 
 }
 
@@ -47,8 +44,9 @@ void loop(void) {
     //SerialUSB.write(&ch, 1);
     //SerialUSB.write(ch);
 
+    usbSerial.println("Banana!");
     //The serial write function
-    USBSerialwriteMain(&ch, 1);
+    //USBSerialwriteMain(&ch, 1);
 
     //usb_cdcacm_tx((uint8*)&ch2, 1); 
     //usb_cdcacm_tx((uint8*)&ch, 1); 

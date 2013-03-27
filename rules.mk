@@ -17,8 +17,11 @@ include $(MAKEDIR)/header.mk
 
 #PROJECT_BUILD_DIRS := getter
 #PROJECT_BUILD_DIRS += randomizer
+
 PROJECT_BUILD_DIRS := board
-PROJECT_BUILD_DIRS += USBSerial
+PROJECT_BUILD_DIRS += SerialUSB
+PROJECT_BUILD_DIRS += USART
+
 
 BUILDDIRS += $(addprefix $(BUILD_PATH)/$(d)/, $(PROJECT_BUILD_DIRS))
 
@@ -41,7 +44,7 @@ FLAGS_ABS_INCLUDE += $(addprefix -I/, $(EXTERNAL_INCLUDE_DIRS))
 # WIRISH_INCLUDES and LIBMAPLE_INCLUDES provide the appropriate GCC -I
 # switches to let you include libmaple headers. FOO_INCLUDES gives the
 # include switches you need for the foolib headers.
-CFLAGS_$(d) := $(WIRISH_INCLUDES) $(LIBMAPLE_INCLUDES) $(FOO_INCLUDES)
+CFLAGS_$(d) := $(WIRISH_INCLUDES) $(LIBMAPLE_INCLUDES)
 # We'll also want our local include directory
 CFLAGS_$(d) += $(FLAGS_ABS_INCLUDE)
 
@@ -65,7 +68,6 @@ ASFLAGS_$(d) :=
 # cSRCS_$(d) are the C source files we want compiled.
 
 #cSRCS_$(d) := randomizer/randomizer.c
-cSRCS_$(d) := USBSerial/USBSerial.c
 
 
 # cppSRCS_$(d) are the C++ sources we want compiled.  We have our own
@@ -76,7 +78,10 @@ cSRCS_$(d) := USBSerial/USBSerial.c
 # it something else. Annoying! Hopefully LeafLabs will fix it soon.
 cppSRCS_$(d) := real-main.cpp
 cppSRCS_$(d) += board/board.cpp
+cppSRCS_$(d) += SerialUSB/SerialUSB.cpp
+cppSRCS_$(d) += USART/USART.cpp
 #cppSRCS_$(d) += getter/getter.cpp
+
 
 # sSRCS_$(d) are the assembly sources. We don't have any.
 sSRCS_$(d) :=
